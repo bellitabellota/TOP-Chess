@@ -1,10 +1,21 @@
+require_relative "player"
+
 class Game
   def initialize
-    
+    @player1 = Player.new
+    @player2 = Player.new
   end
 
   def play_game
+    create_players
     display_board
+  end
+
+  def create_players
+    player1.request_name(1)
+    player1.request_preferred_set_color
+    player2.request_name(2)
+    player2.assign_remaining_set_color
   end
 
   private
