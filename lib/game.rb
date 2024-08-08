@@ -19,7 +19,16 @@ class Game
     self.player1_set = create_set(player1)
     self.player2_set = create_set(player2)
 
+    place_set_on_board
+
     display_board
+  end
+
+  def place_set_on_board
+    board[player1_set.knight1.coordinates[0]][player1_set.knight1.coordinates[1]] = player1_set.knight1
+    board[player1_set.knight2.coordinates[0]][player1_set.knight2.coordinates[1]] = player1_set.knight2
+    board[player2_set.knight1.coordinates[0]][player2_set.knight1.coordinates[1]] = player2_set.knight1
+    board[player2_set.knight2.coordinates[0]][player2_set.knight2.coordinates[1]] = player2_set.knight2
   end
 
   def create_set(player)
