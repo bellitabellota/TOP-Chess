@@ -3,14 +3,15 @@ require_relative "piece_set"
 
 class Game
   attr_reader :player1, :player2
-  attr_accessor :player1_set, :player2_set, :board
+  attr_accessor :player1_set, :player2_set, :board, :tboard
 
   def initialize
     @player1 = Player.new
     @player1_set = nil
     @player2 = Player.new
     @player1_set = nil
-    @board = Array.new(8) { Array.new(8, " ") }
+    @board = Array.new(8) { Array.new(8, nil) }
+    @tboard = Array.new(8) { Array.new(8, " ") }
   end
 
   def play_game
@@ -20,8 +21,19 @@ class Game
     self.player2_set = create_set(player2)
 
     place_set_on_board
+    place_set_tokens_on_tboard
 
-    display_board
+    # display_board
+  end
+
+  def place_set_tokens_on_tboard
+    board.each_with_index do |array, index|
+      array.each_with_index do |value, inner_index|
+        if !value.nil?
+          tboard[index][inner_index] = value.token
+        end
+      end
+    end
   end
 
   def place_set_on_board
@@ -66,7 +78,7 @@ class Game
     puts "   ------------------------------- "
     puts "2 | #{board[0][1]} | #{board[1][1]} | #{board[2][1]} | #{board[3][1]} | #{board[4][1]} | #{board[5][1]} | #{board[6][1]} | #{board[7][1]} | 2"
     puts "   ------------------------------- "
-    puts "1 | #{board[0][0]} | #{board[1][0]} | #{board[2][0]} | #{board[3][0]} | #{board[4][0]} | #{board[5][0]} | #{board[6][0]} | #{board[7][0]} | 1"
+    puts "1 | #{board[0][0]} | #{tboard[1][0]} | #{board[2][0]} | #{board[3][0]} | #{board[4][0]} | #{board[5][0]} | #{board[6][0]} | #{board[7][0]} | 1"
     puts "   ------------------------------- "
     puts "    a   b   c   d   e   f   g   h  "
     puts
