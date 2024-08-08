@@ -10,6 +10,7 @@ class Game
     @player1_set = nil
     @player2 = Player.new
     @player1_set = nil
+    @board = Array.new(8) { Array.new(8, " ") }
   end
 
   def play_game
