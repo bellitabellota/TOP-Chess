@@ -1,5 +1,5 @@
 require_relative "player"
-require_relative "sets"
+require_relative "piece_set"
 
 class Game
   attr_reader :player1, :player2
@@ -24,9 +24,9 @@ class Game
 
   def create_set(player)
     if player.set_color == "white"
-      Set.new(0)
+      PieceSet.new(0)
     else
-      Set.new(1)
+      PieceSet.new(1)
     end
   end
 
