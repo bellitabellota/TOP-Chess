@@ -23,7 +23,7 @@ class Game
     place_set_on_board
     place_set_tokens_on_tboard
 
-    # display_board
+    display_board
   end
 
   def place_set_tokens_on_tboard
@@ -64,21 +64,21 @@ class Game
     puts
     puts "    a   b   c   d   e   f   g   h  "
     puts "   ------------------------------- "
-    puts "8 | #{board[0][7]} | #{board[1][7]} | #{board[2][7]} | #{board[3][7]} | #{board[4][7]} | #{board[5][7]} | #{board[6][7]} | #{board[7][7]} | 8"
+    puts "8 | #{tboard[0][7]} | #{tboard[1][7]} | #{tboard[2][7]} | #{tboard[3][7]} | #{tboard[4][7]} | #{tboard[5][7]} | #{tboard[6][7]} | #{tboard[7][7]} | 8"
     puts "   ------------------------------- "
-    puts "7 | #{board[0][6]} | #{board[1][6]} | #{board[2][6]} | #{board[3][6]} | #{board[4][6]} | #{board[5][6]} | #{board[6][6]} | #{board[7][6]} | 7"
+    puts "7 | #{tboard[0][6]} | #{tboard[1][6]} | #{tboard[2][6]} | #{tboard[3][6]} | #{tboard[4][6]} | #{tboard[5][6]} | #{tboard[6][6]} | #{tboard[7][6]} | 7"
     puts "   ------------------------------- "
-    puts "6 | #{board[0][5]} | #{board[1][5]} | #{board[2][5]} | #{board[3][5]} | #{board[4][5]} | #{board[5][5]} | #{board[6][5]} | #{board[7][5]} | 6"
+    puts "6 | #{tboard[0][5]} | #{tboard[1][5]} | #{tboard[2][5]} | #{tboard[3][5]} | #{tboard[4][5]} | #{tboard[5][5]} | #{tboard[6][5]} | #{tboard[7][5]} | 6"
     puts "   ------------------------------- "
-    puts "5 | #{board[0][4]} | #{board[1][4]} | #{board[2][4]} | #{board[3][4]} | #{board[4][4]} | #{board[5][4]} | #{board[6][4]} | #{board[7][4]} | 5"
+    puts "5 | #{tboard[0][4]} | #{tboard[1][4]} | #{tboard[2][4]} | #{tboard[3][4]} | #{tboard[4][4]} | #{tboard[5][4]} | #{tboard[6][4]} | #{tboard[7][4]} | 5"
     puts "   ------------------------------- "
-    puts "4 | #{board[0][3]} | #{board[1][3]} | #{board[2][3]} | #{board[3][3]} | #{board[4][3]} | #{board[5][3]} | #{board[6][3]} | #{board[7][3]} | 4"
+    puts "4 | #{tboard[0][3]} | #{tboard[1][3]} | #{tboard[2][3]} | #{tboard[3][3]} | #{tboard[4][3]} | #{tboard[5][3]} | #{tboard[6][3]} | #{tboard[7][3]} | 4"
     puts "   ------------------------------- "
-    puts "3 | #{board[0][2]} | #{board[1][2]} | #{board[2][2]} | #{board[3][2]} | #{board[4][2]} | #{board[5][2]} | #{board[6][2]} | #{board[7][2]} | 3"
+    puts "3 | #{tboard[0][2]} | #{tboard[1][2]} | #{tboard[2][2]} | #{tboard[3][2]} | #{tboard[4][2]} | #{tboard[5][2]} | #{tboard[6][2]} | #{tboard[7][2]} | 3"
     puts "   ------------------------------- "
-    puts "2 | #{board[0][1]} | #{board[1][1]} | #{board[2][1]} | #{board[3][1]} | #{board[4][1]} | #{board[5][1]} | #{board[6][1]} | #{board[7][1]} | 2"
+    puts "2 | #{tboard[0][1]} | #{tboard[1][1]} | #{tboard[2][1]} | #{tboard[3][1]} | #{tboard[4][1]} | #{tboard[5][1]} | #{tboard[6][1]} | #{tboard[7][1]} | 2"
     puts "   ------------------------------- "
-    puts "1 | #{board[0][0]} | #{tboard[1][0]} | #{board[2][0]} | #{board[3][0]} | #{board[4][0]} | #{board[5][0]} | #{board[6][0]} | #{board[7][0]} | 1"
+    puts "1 | #{tboard[0][0]} | #{tboard[1][0]} | #{tboard[2][0]} | #{tboard[3][0]} | #{tboard[4][0]} | #{tboard[5][0]} | #{tboard[6][0]} | #{tboard[7][0]} | 1"
     puts "   ------------------------------- "
     puts "    a   b   c   d   e   f   g   h  "
     puts
