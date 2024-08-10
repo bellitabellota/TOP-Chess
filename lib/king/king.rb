@@ -4,7 +4,7 @@ class King
   attr_reader :token, :coordinates
   attr_accessor :current_position
 
-  @@graph = KingGraph.new ###
+  @@graph = KingGraph.new
   @@start_coordinates = [[4, 0], [4, 7]]
   @@king_tokens = ["\u265A", "\u2654"]
 
