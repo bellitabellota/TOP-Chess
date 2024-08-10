@@ -1,4 +1,5 @@
 require_relative "knight/knight"
+require_relative "king/king"
 
 class Player
   attr_reader :name, :set_color, :set
@@ -48,5 +49,6 @@ class Player
   def assign_pieces(token_index)
     set.push(Knight.new(token_index))
     set.push(Knight.new(token_index))
+    set.push(King.new(token_index))
   end
 end
