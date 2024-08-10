@@ -1,5 +1,4 @@
 require_relative "player"
-require_relative "piece_set"
 
 class Game
   attr_reader :player1, :player2
@@ -7,18 +6,17 @@ class Game
 
   def initialize
     @player1 = Player.new
-    @player1_set = nil
     @player2 = Player.new
-    @player1_set = nil
     @board = Array.new(8) { Array.new(8, nil) }
     @tboard = Array.new(8) { Array.new(8, " ") }
   end
 
   def play_game
     create_players
-
-    self.player1_set = create_set(player1)
-    self.player2_set = create_set(player2)
+    create_set(player1)
+    create_set(player2)
+    p player1.set
+    p player2.set
 
     place_set_on_board
     place_set_tokens_on_tboard
@@ -37,17 +35,15 @@ class Game
   end
 
   def place_set_on_board
-    board[player1_set.knight1.coordinates[0]][player1_set.knight1.coordinates[1]] = player1_set.knight1
-    board[player1_set.knight2.coordinates[0]][player1_set.knight2.coordinates[1]] = player1_set.knight2
-    board[player2_set.knight1.coordinates[0]][player2_set.knight1.coordinates[1]] = player2_set.knight1
-    board[player2_set.knight2.coordinates[0]][player2_set.knight2.coordinates[1]] = player2_set.knight2
+    player1.set.each { |piece| board[piece.coordinates[0]][piece.coordinates[1]] = piece }
+    player2.set.each { |piece| board[piece.coordinates[0]][piece.coordinates[1]] = piece }
   end
 
   def create_set(player)
     if player.set_color == "white"
-      PieceSet.new(0)
+      player.assign_pieces(0)
     else
-      PieceSet.new(1)
+      player.assign_pieces(1)
     end
   end
 

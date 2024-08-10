@@ -1,11 +1,14 @@
+require_relative "knight/knight"
+
 class Player
-  attr_reader :name, :set_color
+  attr_reader :name, :set_color, :set
 
   @@available_set_colors = ["white", "black"]
 
   def initialize
     @name = nil
     @set_color = nil
+    @set = []
   end
 
   def request_name(player_number)
@@ -40,5 +43,10 @@ class Player
   def assign_remaining_set_color
     @set_color = @@available_set_colors.pop
     puts "#{name} plays #{set_color}."
+  end
+
+  def assign_pieces(token_index)
+    set.push(Knight.new(token_index))
+    set.push(Knight.new(token_index))
   end
 end
