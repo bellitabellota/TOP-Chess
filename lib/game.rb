@@ -29,7 +29,24 @@ class Game
 
   def request_player_move
     piece_to_move = choose_piece_for_move
-    p piece_to_move
+
+    target_field = choose_target_field(piece_to_move)
+  end
+
+  def choose_target_field(piece_to_move)
+    target_field = position_of_target_field(piece_to_move)
+    ##check if this target field is a possible move
+  end
+
+  def position_of_target_field(piece_to_move)
+    puts "#{current_player.name} where do you want to place your #{piece_to_move.class}? Please enter the coordinates:"
+
+    loop do
+      input = gets.chomp
+      return input if verify_input(input)
+
+      puts "Invalid input. Try again:"
+    end
   end
 
   def choose_piece_for_move
