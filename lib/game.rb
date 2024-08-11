@@ -28,7 +28,41 @@ class Game
   end
 
   def request_player_move
-    piece_position = position_of_piece
+    piece_to_move = choose_piece_for_move
+    p piece_to_move
+  end
+
+  def choose_piece_for_move
+    loop do
+      piece_position = position_of_piece
+
+      board_indexes = convert_to_indexes(piece_position)
+
+      return board[board_indexes[0]][board_indexes[1]] if field_contains_piece_of_player?(board_indexes)
+
+      puts "The field you entered does not contain a piece of your set."
+      puts
+    end
+  end
+
+  def field_contains_piece_of_player?(board_indexes)
+    current_player.set.include?(board[board_indexes[0]][board_indexes[1]])
+  end
+
+  def convert_to_indexes(piece_position)
+    array = piece_position.split("")
+
+    array[0] = convert_letter(array[0].downcase)
+    array[1] = array[1].to_i - 1
+
+    array
+  end
+
+  def convert_letter(input_letter)
+    letters = ("a".."h").to_a
+    number = nil
+    letters.each_with_index{ |letter, index| number = index if letter == input_letter }
+    number
   end
 
   def position_of_piece
@@ -38,7 +72,7 @@ class Game
       input = gets.chomp
       return input if verify_input(input)
 
-      puts "Invalid input. Try again."
+      puts "Invalid input. Try again:"
     end
   end
 
