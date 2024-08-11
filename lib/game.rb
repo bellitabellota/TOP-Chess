@@ -19,6 +19,45 @@ class Game
     set_up_game
 
     display_board
+
+    make_player_move
+  end
+
+  def make_player_move
+    request_player_move
+  end
+
+  def request_player_move
+    piece_position = position_of_piece
+  end
+
+  def position_of_piece
+    puts "#{current_player.name} enter the coordinates of the piece you want to move (e.g. b2):"
+
+    loop do
+      input = gets.chomp
+      return input if verify_input(input)
+
+      puts "Invalid input. Try again."
+    end
+  end
+
+  def verify_input(input)
+    return false if input.length != 2
+
+    input = input.split("")
+
+    return false unless verify_first_character(input[0]) && verify_second_character(input[1])
+
+    true
+  end
+
+  def verify_second_character(second_character)
+    ("1".."8").include?(second_character)
+  end
+
+  def verify_first_character(first_character)
+    ("a".."h").include?(first_character.downcase)
   end
 
   def switch_current_player
