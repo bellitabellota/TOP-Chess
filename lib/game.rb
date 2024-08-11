@@ -2,26 +2,36 @@ require_relative "player"
 
 class Game
   attr_reader :player1, :player2
-  attr_accessor :player1_set, :player2_set, :board, :tboard
+  attr_accessor :player1_set, :player2_set, :board, :tboard, :current_player
 
   def initialize
     @player1 = Player.new
     @player2 = Player.new
     @board = Array.new(8) { Array.new(8, nil) }
     @tboard = Array.new(8) { Array.new(8, " ") }
+    @current_player = player1
   end
 
   def play_game
     create_players
-    create_set(player1)
-    create_set(player2)
-    p player1.set
-    p player2.set
+
+    2.times do
+      create_set(current_player)
+      switch_current_player
+    end
 
     place_set_on_board
     place_set_tokens_on_tboard
 
     display_board
+  end
+
+  def switch_current_player
+    if current_player == player1
+      self.current_player = player2
+    else
+      self.current_player = player1
+    end
   end
 
   def place_set_tokens_on_tboard
@@ -41,17 +51,20 @@ class Game
 
   def create_set(player)
     if player.set_color == "white"
-      player.assign_pieces(0)
+      player.assign_pieces(0, player)
     else
-      player.assign_pieces(1)
+      player.assign_pieces(1, player)
     end
   end
 
   def create_players
-    player1.request_name(1)
-    player1.request_preferred_set_color
-    player2.request_name(2)
-    player2.assign_remaining_set_color
+    current_player.request_name(1)
+    current_player.request_preferred_set_color
+    switch_current_player
+
+    current_player.request_name(2)
+    current_player.assign_remaining_set_color
+    switch_current_player
   end
 
   private
