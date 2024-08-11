@@ -3,6 +3,7 @@ require_relative "king/king"
 require_relative "rook/rook"
 require_relative "bishop/bishop"
 require_relative "queen/queen"
+require_relative "pawn/pawn"
 
 class Player
   attr_reader :name, :set_color, :set
@@ -49,7 +50,7 @@ class Player
     puts "#{name} plays #{set_color}."
   end
 
-  def assign_pieces(token_index)
+  def assign_pieces(token_index, player)
     set.push(King.new(token_index))
     set.push(Queen.new(token_index))
 
@@ -57,6 +58,20 @@ class Player
       set.push(Knight.new(token_index))
       set.push(Rook.new(token_index))
       set.push(Bishop.new(token_index))
+    end
+
+    create_pawns(token_index, player)
+  end
+
+  def create_pawns(token_index, player)
+    8.times do
+      set.push(Pawn.new(token_index))
+    end
+
+    if player.set[-1].coordinates[1] == 6
+      Pawn.graph_player1 = PawnGraph.new(player)
+    else
+      Pawn.graph_player2 = PawnGraph.new(player)
     end
   end
 end
