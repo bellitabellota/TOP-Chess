@@ -34,24 +34,16 @@ class Game
   end
 
   def choose_target_field(piece_to_move)
-    target_field = position_of_target_field(piece_to_move)
-    ##check if this target field is a possible move
-  end
-
-  def position_of_target_field(piece_to_move)
+    puts
     puts "#{current_player.name} where do you want to place your #{piece_to_move.class}? Please enter the coordinates:"
+    target_field = request_coordinates
 
-    loop do
-      input = gets.chomp
-      return input if verify_input(input)
-
-      puts "Invalid input. Try again:"
-    end
   end
 
   def choose_piece_for_move
     loop do
-      piece_position = position_of_piece
+      puts "#{current_player.name} enter the coordinates of the piece you want to move (e.g. b2):"
+      piece_position = request_coordinates
 
       board_indexes = convert_to_indexes(piece_position)
 
@@ -82,9 +74,7 @@ class Game
     number
   end
 
-  def position_of_piece
-    puts "#{current_player.name} enter the coordinates of the piece you want to move (e.g. b2):"
-
+  def request_coordinates
     loop do
       input = gets.chomp
       return input if verify_input(input)
