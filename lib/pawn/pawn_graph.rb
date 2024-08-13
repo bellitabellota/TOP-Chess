@@ -19,4 +19,10 @@ class PawnGraph
     end
     array
   end
+
+  def find_vertex(start_position)
+    vertex_with_start_position = nil
+    vertices.each { |vertex| vertex_with_start_position = vertex if vertex.coordinates == start_position }
+    vertex_with_start_position
+  end
 end

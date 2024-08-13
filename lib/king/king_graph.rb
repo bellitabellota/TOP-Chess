@@ -1,6 +1,8 @@
 require_relative "king_vertex"
 
 class KingGraph
+  attr_reader :vertices
+  
   def initialize
     @vertices = create_vertices
   end
@@ -16,5 +18,11 @@ class KingGraph
       end
     end
     array
+  end
+
+  def find_vertex(start_position)
+    vertex_with_start_position = nil
+    vertices.each { |vertex| vertex_with_start_position = vertex if vertex.coordinates == start_position }
+    vertex_with_start_position
   end
 end
