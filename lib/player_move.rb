@@ -9,27 +9,15 @@ module PlayerMove
 
     target_field = choose_target_field(piece_to_move)
 
-    verify_target_field_reachable?(piece_to_move, piece_indexes, target_field)
+  p  verify_target_field_reachable?(piece_to_move, piece_indexes, target_field)
   end
 
   def verify_target_field_reachable?(piece_to_move, piece_indexes, target_field)
     target_indexes = convert_to_indexes(target_field)
     piece_class = piece_to_move.class
 
-    if piece_class == Knight
-      current_vertex = Knight.graph.find_vertex(piece_indexes)
-      current_vertex.reachable_coordinates.include?(target_indexes)
-    elsif piece_class == Bishop
-      current_vertex = Bishop.graph.find_vertex(piece_indexes)
-      current_vertex.reachable_coordinates.include?(target_indexes)
-    elsif piece_class == King
-      current_vertex = King.graph.find_vertex(piece_indexes)
-      current_vertex.reachable_coordinates.include?(target_indexes)
-    elsif piece_class == Queen
-      current_vertex = Queen.graph.find_vertex(piece_indexes)
-      current_vertex.reachable_coordinates.include?(target_indexes)
-    elsif piece_class == Rook
-      current_vertex = Rook.graph.find_vertex(piece_indexes)
+    if [Knight, Bishop, King, Queen, Rook].include?(piece_class)
+      current_vertex = piece_class.graph.find_vertex(piece_indexes)
       current_vertex.reachable_coordinates.include?(target_indexes)
     elsif piece_class == Pawn
       reachable_in_graph_of_current_player?(piece_indexes, target_indexes) || diagonal_move_possible?(piece_to_move, piece_indexes, target_indexes)
