@@ -155,4 +155,30 @@ describe Game do
       end
     end
   end
+
+  describe "#reachable_in_graph_of_current_player?" do
+    let(:pawn) { Pawn.new(0) }
+    let(:pawn_indexes) { [7, 6] }
+
+    before do
+      game.player1.instance_variable_set(:@set, [Pawn.new(0)])
+      Pawn.graph_player1 = PawnGraph.new(game.player1)
+    end
+
+    context "when target field reachable" do
+      let(:target_indexes) { [7, 4] }
+      it "returns true" do
+        return_value = game.reachable_in_graph_of_current_player?(pawn_indexes, target_indexes)
+        expect(return_value).to eq true
+      end
+    end
+
+    context "when target field NOT reachable" do
+      let(:target_indexes) { [7, 3] }
+      it "returns false" do
+        return_value = game.reachable_in_graph_of_current_player?(pawn_indexes, target_indexes)
+        expect(return_value).to eq false
+      end
+    end
+  end
 end
