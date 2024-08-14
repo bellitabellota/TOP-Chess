@@ -120,4 +120,39 @@ describe Game do
       end
     end
   end
+
+  describe "#diagonal_move_possible?" do
+    let(:pawn) { Pawn.new(0) }
+    let(:pawn_indexes) { [7, 6] }
+    let(:target_indexes) { [6, 5] }
+
+    context "when target field is diagonal field and contains piece of opponent" do
+      it "returns true" do
+        allow(game).to receive(:calculate_diagonal_indexes).and_return([[6, 5]])
+        opponent_set = game.player2.instance_variable_set(:@set, [King.new(0)])
+        game.board[target_indexes[0]][target_indexes[1]] = opponent_set[0]
+
+        return_value = game.diagonal_move_possible?(pawn, pawn_indexes, target_indexes)
+        expect(return_value).to eq true
+      end
+    end
+
+    context "when target field is not a diagonal field" do
+      it "returns nil" do
+        allow(game).to receive(:calculate_diagonal_indexes).and_return([[6, 4]])
+
+        return_value = game.diagonal_move_possible?(pawn, pawn_indexes, target_indexes)
+        expect(return_value).to eq nil
+      end
+    end
+
+    context "when target field is diagonal field and does not contain piece of opponent" do
+      it "returns false" do
+        allow(game).to receive(:calculate_diagonal_indexes).and_return([[6, 5]])
+
+        return_value = game.diagonal_move_possible?(pawn, pawn_indexes, target_indexes)
+        expect(return_value).to eq false
+      end
+    end
+  end
 end
