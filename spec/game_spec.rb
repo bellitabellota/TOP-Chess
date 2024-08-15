@@ -181,4 +181,34 @@ describe Game do
       end
     end
   end
+
+  describe "#target_field_not_containing_own_piece?" do
+    context "when target_field contains own piece" do
+      let(:target_field) { "a7" }
+      it "returns false" do
+        current_player_set = game.player1.instance_variable_set(:@set, [King.new(0)])
+        game.board[0][6] = current_player_set[0]
+        return_value = game.target_field_not_containing_own_piece?(target_field)
+        expect(return_value).to eq false
+      end
+    end
+
+    context "when target_field contains opponent piece" do
+      let(:target_field) { "a2" }
+      it "returns true" do
+        return_value = game.target_field_not_containing_own_piece?(target_field)
+        expect(return_value).to eq true
+      end
+    end
+
+    context "when target_field is empty" do
+      let(:target_field) { "a3" }
+      it "returns true" do
+        opponent_set = game.player2.instance_variable_set(:@set, [King.new(1)])
+        game.board[0][2] = opponent_set[0]
+        return_value = game.target_field_not_containing_own_piece?(target_field)
+        expect(return_value).to eq true
+      end
+    end
+  end
 end
