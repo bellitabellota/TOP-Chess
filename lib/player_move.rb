@@ -9,7 +9,17 @@ module PlayerMove
 
     target_field = choose_target_field(piece_to_move)
 
-  p  verify_target_field_reachable?(piece_to_move, piece_indexes, target_field)
+    verify_target_field_reachable?(piece_to_move, piece_indexes, target_field)
+
+    p target_field_not_containing_own_piece?(target_field)
+  end
+
+  def target_field_not_containing_own_piece?(target_field)
+    target_indexes = convert_to_indexes(target_field)
+
+    return false if current_player.set.include?(board[target_indexes[0]] [target_indexes[1]])
+
+    true
   end
 
   def verify_target_field_reachable?(piece_to_move, piece_indexes, target_field)
