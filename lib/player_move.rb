@@ -8,22 +8,76 @@ module PlayerMove
     piece_to_move = board[piece_indexes[0]][piece_indexes[1]]
 
     target_field = choose_target_field(piece_to_move)
-
-    verify_target_field_reachable?(piece_to_move, piece_indexes, target_field)
-
-    p target_field_not_containing_own_piece?(target_field)
-  end
-
-  def target_field_not_containing_own_piece?(target_field)
     target_indexes = convert_to_indexes(target_field)
 
+    verify_target_field_reachable?(piece_to_move, piece_indexes, target_indexes)
+
+    target_field_not_containing_own_piece?(target_indexes)
+
+    path_free?(piece_to_move, piece_indexes, target_indexes)
+  end
+
+  def path_free?(piece_to_move, piece_indexes, target_indexes)
+    return true if piece_to_move.is_a?(Knight)
+
+    fields_on_move = calculate_fields_on_move(piece_indexes, target_indexes)
+
+    fields_on_move.each { |field_on_move| return false unless board[field_on_move[0]][field_on_move[1]].nil? }
+    true
+  end
+
+  def calculate_fields_on_move(piece_indexes, target_indexes)
+    if piece_indexes[0] == target_indexes[0]
+      vertical_path(piece_indexes, target_indexes)
+    elsif piece_indexes[1] == target_indexes[1]
+      horizontal_path(piece_indexes, target_indexes)
+    else
+      diagonal_path(piece_indexes, target_indexes)
+    end
+  end
+
+  def diagonal_path(piece_indexes, target_indexes)
+    y_summand = piece_indexes[1] > target_indexes[1] ? -1 : 1
+    x_summand = piece_indexes[0] > target_indexes[0] ? -1 : 1
+    array = []
+
+    until piece_indexes[1] == target_indexes[1] - y_summand
+      array.push([piece_indexes[0] + x_summand, piece_indexes[1] + y_summand])
+      piece_indexes[1] += y_summand
+      piece_indexes[0] += x_summand
+    end
+    array
+  end
+
+  def vertical_path(piece_indexes, target_indexes)
+    summand = piece_indexes[1] > target_indexes[1] ? -1 : 1
+    array = []
+
+    until piece_indexes[1] == target_indexes[1] - summand
+      array.push([piece_indexes[0], piece_indexes[1] + summand])
+      piece_indexes[1] += summand
+    end
+    array
+  end
+
+  def horizontal_path(piece_indexes, target_indexes)
+    summand = piece_indexes[0] > target_indexes[0] ? -1 : 1
+    array = []
+
+    until piece_indexes[0] == target_indexes[0] - summand
+      array.push([piece_indexes[0] + summand, piece_indexes[1]])
+      piece_indexes[0] += summand
+    end
+    array
+  end
+
+  def target_field_not_containing_own_piece?(target_indexes)
     return false if current_player.set.include?(board[target_indexes[0]] [target_indexes[1]])
 
     true
   end
 
-  def verify_target_field_reachable?(piece_to_move, piece_indexes, target_field)
-    target_indexes = convert_to_indexes(target_field)
+  def verify_target_field_reachable?(piece_to_move, piece_indexes, target_indexes)
     piece_class = piece_to_move.class
 
     if [Knight, Bishop, King, Queen, Rook].include?(piece_class)
