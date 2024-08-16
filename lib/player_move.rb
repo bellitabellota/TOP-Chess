@@ -4,17 +4,27 @@ module PlayerMove
   end
 
   def request_player_move
-    piece_indexes = choose_piece_for_move
-    piece_to_move = board[piece_indexes[0]][piece_indexes[1]]
+    loop do
+      piece_indexes = choose_piece_for_move
+      piece_to_move = board[piece_indexes[0]][piece_indexes[1]]
 
-    target_field = choose_target_field(piece_to_move)
-    target_indexes = convert_to_indexes(target_field)
+      target_field = choose_target_field(piece_to_move)
+      target_indexes = convert_to_indexes(target_field)
 
-    verify_target_field_reachable?(piece_to_move, piece_indexes, target_indexes)
+      return [piece_indexes, target_indexes] if move_possible?(piece_to_move, piece_indexes, target_indexes)
 
-    target_field_not_containing_own_piece?(target_indexes)
+      puts "This is not a valid move. Let's try again."
+      puts
+    end
+  end
 
-    path_free?(piece_to_move, piece_indexes, target_indexes)
+  def move_possible?(piece_to_move, piece_indexes, target_indexes)
+    return false if piece_indexes == target_indexes
+    return false unless verify_target_field_reachable?(piece_to_move, piece_indexes, target_indexes)
+    return false unless target_field_not_containing_own_piece?(target_indexes)
+    return false unless path_free?(piece_to_move, piece_indexes, target_indexes)
+
+    true
   end
 
   def path_free?(piece_to_move, piece_indexes, target_indexes)
