@@ -21,8 +21,11 @@ class Game
     set_up_game
     display_board
 
-    make_player_move
-    display_board
+    loop do
+      make_player_move
+      display_board
+      switch_current_player
+    end
   end
 
   def switch_current_player
