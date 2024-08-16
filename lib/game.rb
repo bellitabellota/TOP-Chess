@@ -19,10 +19,10 @@ class Game
 
   def play_game
     set_up_game
-
     display_board
 
     make_player_move
+    display_board
   end
 
   def switch_current_player

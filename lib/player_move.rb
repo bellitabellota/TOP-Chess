@@ -1,6 +1,15 @@
 module PlayerMove
   def make_player_move
-    request_player_move
+    player_move = request_player_move
+    update_boards(player_move)
+  end
+
+  def update_boards(player_move)
+    board[player_move[1][0]][player_move[1][1]] = board[player_move[0][0]][player_move[0][1]]
+    board[player_move[0][0]][player_move[0][1]] = nil
+
+    tboard[player_move[1][0]][player_move[1][1]] = tboard[player_move[0][0]][player_move[0][1]]
+    tboard[player_move[0][0]][player_move[0][1]] = " "
   end
 
   def request_player_move
@@ -47,36 +56,39 @@ module PlayerMove
   end
 
   def diagonal_path(piece_indexes, target_indexes)
-    y_summand = piece_indexes[1] > target_indexes[1] ? -1 : 1
-    x_summand = piece_indexes[0] > target_indexes[0] ? -1 : 1
+    start_indexes = piece_indexes.map { |num| num }
+    y_summand = start_indexes[1] > target_indexes[1] ? -1 : 1
+    x_summand = start_indexes[0] > target_indexes[0] ? -1 : 1
     array = []
 
-    until piece_indexes[1] == target_indexes[1] - y_summand
-      array.push([piece_indexes[0] + x_summand, piece_indexes[1] + y_summand])
-      piece_indexes[1] += y_summand
-      piece_indexes[0] += x_summand
+    until start_indexes[1] == target_indexes[1] - y_summand
+      array.push([start_indexes[0] + x_summand, start_indexes[1] + y_summand])
+      start_indexes[1] += y_summand
+      start_indexes[0] += x_summand
     end
     array
   end
 
   def vertical_path(piece_indexes, target_indexes)
-    summand = piece_indexes[1] > target_indexes[1] ? -1 : 1
+    start_indexes = piece_indexes.map { |num| num }
+    summand = start_indexes[1] > target_indexes[1] ? -1 : 1
     array = []
 
-    until piece_indexes[1] == target_indexes[1] - summand
-      array.push([piece_indexes[0], piece_indexes[1] + summand])
-      piece_indexes[1] += summand
+    until start_indexes[1] == target_indexes[1] - summand
+      array.push([start_indexes[0], start_indexes[1] + summand])
+      start_indexes[1] += summand
     end
     array
   end
 
   def horizontal_path(piece_indexes, target_indexes)
-    summand = piece_indexes[0] > target_indexes[0] ? -1 : 1
+    start_indexes = piece_indexes.map { |num| num }
+    summand = start_indexes[0] > target_indexes[0] ? -1 : 1
     array = []
 
-    until piece_indexes[0] == target_indexes[0] - summand
-      array.push([piece_indexes[0] + summand, piece_indexes[1]])
-      piece_indexes[0] += summand
+    until start_indexes[0] == target_indexes[0] - summand
+      array.push([start_indexes[0] + summand, start_indexes[1]])
+      start_indexes[0] += summand
     end
     array
   end
