@@ -1,14 +1,14 @@
 module GamePreparation
   def set_up_game
     create_players
-
-    2.times do
-      create_set(current_player)
-      switch_current_player
-    end
+    create_set
 
     place_set_on_board
     place_set_tokens_on_tboard
+
+    if current_player.set_color == "black"
+      switch_current_player
+    end
   end
 
   def place_set_tokens_on_tboard
@@ -26,11 +26,13 @@ module GamePreparation
     player2.set.each { |piece| board[piece.coordinates[0]][piece.coordinates[1]] = piece }
   end
 
-  def create_set(player)
-    if player.set_color == "white"
-      player.assign_pieces(0, player)
+  def create_set
+    if player1.set_color == "white"
+      player2.assign_pieces(1, player2)
+      player1.assign_pieces(0, player1)
     else
-      player.assign_pieces(1, player)
+      player1.assign_pieces(1, player1)
+      player2.assign_pieces(0, player2)
     end
   end
 

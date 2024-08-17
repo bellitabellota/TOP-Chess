@@ -69,9 +69,9 @@ class Player
     end
 
     if player.set[-1].coordinates[1] == 6
-      Pawn.graph_player1 = PawnGraph.new(player)
+      Pawn.graph_player_black = PawnGraph.new(player)
     else
-      Pawn.graph_player2 = PawnGraph.new(player)
+      Pawn.graph_player_white = PawnGraph.new(player)
     end
   end
 end

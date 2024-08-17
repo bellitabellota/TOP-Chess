@@ -143,7 +143,7 @@ module PlayerMove
   end
 
   def reachable_in_graph_of_current_player?(piece_indexes, target_indexes)
-    current_player == player1 ? current_vertex = Pawn.graph_player1.find_vertex(piece_indexes) : current_vertex = Pawn.graph_player2.find_vertex(piece_indexes)
+    current_player.set_color == "white" ? current_vertex = Pawn.graph_player_white.find_vertex(piece_indexes) : current_vertex = Pawn.graph_player_black.find_vertex(piece_indexes)
 
     current_vertex.reachable_coordinates.include?(target_indexes)
   end
