@@ -9,17 +9,17 @@ describe Game do
       let(:knight_indexes) { [6, 7] }
 
       context "when target_field is reachable" do
-        let(:knight_target_field) { "f6" }
+        let(:knight_target_indexes) { [5, 5] }
         it "returns true" do
-          return_value = game.verify_target_field_reachable?(knight, knight_indexes, knight_target_field)
+          return_value = game.verify_target_field_reachable?(knight, knight_indexes, knight_target_indexes)
           expect(return_value).to eq true
         end
       end
 
       context "when target_field NOT reachable" do
-        let(:knight_target_field) { "f5" }
+        let(:knight_target_indexes) { [5, 4] }
         it "returns false" do
-          return_value = game.verify_target_field_reachable?(knight, knight_indexes, knight_target_field)
+          return_value = game.verify_target_field_reachable?(knight, knight_indexes, knight_target_indexes)
           expect(return_value).to eq false
         end
       end
@@ -30,17 +30,17 @@ describe Game do
       let(:bishop_indexes) { [5, 7] }
 
       context "when target_field is reachable" do
-        let(:bishop_target_field) { "d6" }
+        let(:bishop_target_indexes) { [3, 5] }
         it "returns true" do
-          return_value = game.verify_target_field_reachable?(bishop, bishop_indexes, bishop_target_field)
+          return_value = game.verify_target_field_reachable?(bishop, bishop_indexes, bishop_target_indexes)
           expect(return_value).to eq true
         end
       end
 
       context "when target_field NOT reachable" do
-        let(:bishop_target_field) { "e5" }
+        let(:bishop_target_indexes) { [4, 5] }
         it "returns false" do
-          return_value = game.verify_target_field_reachable?(bishop, bishop_indexes, bishop_target_field)
+          return_value = game.verify_target_field_reachable?(bishop, bishop_indexes, bishop_target_indexes)
           expect(return_value).to eq false
         end
       end
@@ -50,17 +50,17 @@ describe Game do
       let(:king) { King.new(0) }
       let(:king_indexes) { [4, 7] }
       context "when target_field is reachable" do
-        let(:king_target_field) { "e7" }
+        let(:king_target_indexes) { [4, 6] }
         it "returns true" do
-          return_value = game.verify_target_field_reachable?(king, king_indexes, king_target_field)
+          return_value = game.verify_target_field_reachable?(king, king_indexes, king_target_indexes)
           expect(return_value).to eq true
         end
       end
 
       context "when target_field NOT reachable" do
-        let(:king_target_field) { "e8" }
+        let(:king_target_indexes) { [4, 8] }
         it "returns false" do
-          return_value = game.verify_target_field_reachable?(king, king_indexes, king_target_field)
+          return_value = game.verify_target_field_reachable?(king, king_indexes, king_target_indexes)
           expect(return_value).to eq false
         end
       end
@@ -70,17 +70,17 @@ describe Game do
       let(:queen) { Queen.new(0) }
       let(:queen_indexes) { [3, 7] }
       context "when target_field is reachable" do
-        let(:queen_target_field) { "h4" }
+        let(:queen_target_indexes) { [7, 3] }
         it "returns true" do
-          return_value = game.verify_target_field_reachable?(queen, queen_indexes, queen_target_field)
+          return_value = game.verify_target_field_reachable?(queen, queen_indexes, queen_target_indexes)
           expect(return_value).to eq true
         end
       end
 
       context "when target_field NOT reachable" do
-        let(:queen_target_field) { "e3" }
+        let(:queen_target_indexes) { [4, 3] }
         it "returns false" do
-          return_value = game.verify_target_field_reachable?(queen, queen_indexes, queen_target_field)
+          return_value = game.verify_target_field_reachable?(queen, queen_indexes, queen_target_indexes)
           expect(return_value).to eq false
         end
       end
@@ -162,7 +162,7 @@ describe Game do
 
     before do
       game.player1.instance_variable_set(:@set, [Pawn.new(0)])
-      Pawn.graph_player1 = PawnGraph.new(game.player1)
+      Pawn.graph_player_black = PawnGraph.new(game.player1)
     end
 
     context "when target field reachable" do
@@ -184,29 +184,29 @@ describe Game do
 
   describe "#target_field_not_containing_own_piece?" do
     context "when target_field contains own piece" do
-      let(:target_field) { "a7" }
+      let(:target_indexes) { [0, 6] }
       it "returns false" do
         current_player_set = game.player1.instance_variable_set(:@set, [King.new(0)])
         game.board[0][6] = current_player_set[0]
-        return_value = game.target_field_not_containing_own_piece?(target_field)
+        return_value = game.target_field_not_containing_own_piece?(target_indexes)
         expect(return_value).to eq false
       end
     end
 
     context "when target_field contains opponent piece" do
-      let(:target_field) { "a2" }
+      let(:target_indexes) { [0, 2] }
       it "returns true" do
-        return_value = game.target_field_not_containing_own_piece?(target_field)
+        return_value = game.target_field_not_containing_own_piece?(target_indexes)
         expect(return_value).to eq true
       end
     end
 
     context "when target_field is empty" do
-      let(:target_field) { "a3" }
+      let(:target_indexes) { [0, 3] }
       it "returns true" do
         opponent_set = game.player2.instance_variable_set(:@set, [King.new(1)])
         game.board[0][2] = opponent_set[0]
-        return_value = game.target_field_not_containing_own_piece?(target_field)
+        return_value = game.target_field_not_containing_own_piece?(target_indexes)
         expect(return_value).to eq true
       end
     end
