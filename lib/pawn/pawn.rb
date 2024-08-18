@@ -1,7 +1,8 @@
 require_relative "pawn_graph"
 
 class Pawn
-  attr_reader :token, :coordinates, :start_position
+  attr_reader :token, :start_position
+  attr_accessor :coordinates
 
   @@graph_player_black = nil
   @@graph_player_white = nil

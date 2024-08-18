@@ -3,6 +3,11 @@ module PlayerMove
     player_move = request_player_move
     update_opponent_set_when_capture(player_move)
     update_boards(player_move)
+    update_coordinates_of_moved_piece(player_move)
+  end
+
+  def update_coordinates_of_moved_piece(player_move)
+    board[player_move[1][0]][player_move[1][1]].coordinates = [player_move[1][0], player_move[1][1]]
   end
 
   def update_boards(player_move)

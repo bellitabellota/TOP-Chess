@@ -1,7 +1,8 @@
 require_relative "queen_graph"
 
 class Queen
-  attr_reader :token, :coordinates
+  attr_reader :token
+  attr_accessor :coordinates
 
   @@graph = QueenGraph.new
   @@start_coordinates = [[3, 0], [3, 7]]

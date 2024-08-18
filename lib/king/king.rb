@@ -1,7 +1,8 @@
 require_relative "king_graph"
 
 class King
-  attr_reader :token, :coordinates
+  attr_reader :token
+  attr_accessor :coordinates
 
   @@graph = KingGraph.new
   @@start_coordinates = [[4, 0], [4, 7]]

@@ -1,8 +1,8 @@
 require_relative "knight_graph"
 
 class Knight
-  attr_reader :token, :coordinates
-  attr_accessor :current_position
+  attr_reader :token
+  attr_accessor :current_position, :coordinates
 
   @@graph = KnightGraph.new
   @@start_coordinates = [[1, 0], [6, 0], [1, 7], [6, 7]]

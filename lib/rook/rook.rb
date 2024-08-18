@@ -1,7 +1,8 @@
 require_relative "rook_graph"
 
 class Rook
-  attr_reader :token, :coordinates
+  attr_reader :token
+  attr_accessor :coordinates
 
   @@graph = RookGraph.new
   @@start_coordinates = [[0, 0], [7, 0], [0, 7], [7, 7]]
