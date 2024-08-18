@@ -4,10 +4,35 @@ module PlayerMove
     update_opponent_set_when_capture(player_move)
     update_boards(player_move)
     update_coordinates_of_moved_piece(player_move)
+    leaves_own_king_in_check?
   end
 
   def update_coordinates_of_moved_piece(player_move)
     board[player_move[1][0]][player_move[1][1]].coordinates = [player_move[1][0], player_move[1][1]]
+  end
+
+  def leaves_own_king_in_check?
+    coordinates_king = current_player.set[0].coordinates
+    reachable_from_current_opponent_set = false
+
+    current_opponent.set.each do |piece|
+      piece_class = piece.class
+
+      if [Knight, Bishop, King, Queen, Rook].include?(piece_class)
+        current_vertex = piece_class.graph.find_vertex(piece.coordinates)
+        return reachable_from_current_opponent_set = true if current_vertex.reachable_coordinates.include?(coordinates_king)
+      elsif piece_class == Pawn
+        piece_indexes = piece.coordinates
+        return reachable_from_current_opponent_set = true if reachable_in_graph_of_opponent_player?(coordinates_king, piece_indexes)
+      end
+    end
+    reachable_from_current_opponent_set
+  end
+
+  def reachable_in_graph_of_opponent_player?(coordinates_king, piece_indexes)
+    current_opponent.set_color == "white" ? current_vertex = Pawn.graph_player_white.find_vertex(piece_indexes) : current_vertex = Pawn.graph_player_black.find_vertex(piece_indexes)
+
+    current_vertex.reachable_coordinates.include?(coordinates_king)
   end
 
   def update_boards(player_move)
