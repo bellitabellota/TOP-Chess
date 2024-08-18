@@ -1,6 +1,7 @@
 module PlayerMove
   def make_player_move
     player_move = request_player_move
+    update_opponent_set_when_capture(player_move)
     update_boards(player_move)
   end
 
@@ -10,6 +11,12 @@ module PlayerMove
 
     tboard[player_move[1][0]][player_move[1][1]] = tboard[player_move[0][0]][player_move[0][1]]
     tboard[player_move[0][0]][player_move[0][1]] = " "
+  end
+
+  def update_opponent_set_when_capture(player_move)
+    if current_opponent.set.include?(board[player_move[1][0]][player_move[1][1]])
+      current_opponent.set.delete(board[player_move[1][0]][player_move[1][1]])
+    end
   end
 
   def request_player_move
