@@ -1,7 +1,8 @@
 require_relative "bishop_graph"
 
 class Bishop
-  attr_reader :token, :coordinates
+  attr_reader :token
+  attr_accessor :coordinates
 
   @@graph = BishopGraph.new
   @@start_coordinates = [[2, 0], [5, 0], [2, 7], [5, 7]]
