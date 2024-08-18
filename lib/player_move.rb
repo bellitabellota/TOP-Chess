@@ -12,6 +12,59 @@ module PlayerMove
     end
 
     update_tboard(player_move)
+
+    if board[player_move[1][0]][player_move[1][1]].is_a?(Pawn)
+      pawn = board[player_move[1][0]][player_move[1][1]]
+      if pawn.start_position[1] == 1 && player_move[1][1] == 7
+        pawn_promotion(pawn)
+      elsif pawn.start_position[1] == 6 && player_move[1][1] == 0
+        pawn_promotion(pawn)
+      end
+      display_board
+    end
+  end
+
+  def pawn_promotion(pawn)
+    puts "#{current_player.name} press 'q' to exchange your Pawn for a Queen, 'r' for a Rook, 'b' for a Bishop or 'k' for a Knight:"
+    player_choice = request_player_choice
+    replace_pawn_with_player_choice(player_choice, pawn)
+  end
+
+  def replace_pawn_with_player_choice(player_choice, pawn)
+    token_index = check_token_index
+    chosen_piece = create_chosen_piece(player_choice, token_index)
+    chosen_piece.coordinates = pawn.coordinates
+
+    current_player.set.delete(pawn)
+
+    current_player.set.insert(2, chosen_piece)
+
+    board[chosen_piece.coordinates[0]][chosen_piece.coordinates[1]] = chosen_piece
+    tboard[chosen_piece.coordinates[0]][chosen_piece.coordinates[1]] = chosen_piece.token
+  end
+
+  def check_token_index
+    current_player.set_color == "white" ? 0 : 1
+  end
+
+  def create_chosen_piece(player_choice, token_index)
+    case player_choice
+    when "q"
+      Queen.new(token_index)
+    when "r"
+      Rook.new(token_index)
+    when "b"
+      Bishop.new(token_index)
+    when "k"
+      Knight.new(token_index)
+    end
+  end
+
+  def request_player_choice
+    loop do
+      input = gets.chomp
+      return input if ["q", "r", "b", "k"].include?(input.downcase)
+    end
   end
 
   def undo_last_move(captured_opponent_piece, player_move)
@@ -254,7 +307,7 @@ module PlayerMove
   def convert_letter(input_letter)
     letters = ("a".."h").to_a
     number = nil
-    letters.each_with_index{ |letter, index| number = index if letter == input_letter }
+    letters.each_with_index { |letter, index| number = index if letter == input_letter }
     number
   end
 
