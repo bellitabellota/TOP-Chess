@@ -108,8 +108,8 @@ module PlayerMove
         piece_indexes = piece.coordinates
         if reachable_in_graph_of_opponent_player?(coordinates_king, piece_indexes) && path_free?(piece, piece.coordinates, coordinates_king)
           return reachable_from_current_opponent_set = true
-        elsif diagonal_move_possible?(piece, piece_indexes, coordinates_king)
-          return reachable_from_current_player_set = true
+        elsif diagonal_move_possible?(current_player, piece, piece_indexes, coordinates_king)
+          return reachable_from_current_opponent_set = true
         end
       end
     end
@@ -233,17 +233,16 @@ module PlayerMove
       current_vertex = piece_class.graph.find_vertex(piece_indexes)
       current_vertex.reachable_coordinates.include?(target_indexes)
     elsif piece_class == Pawn
-      reachable_in_graph_of_current_player?(piece_indexes, target_indexes) || diagonal_move_possible?(piece_to_move, piece_indexes, target_indexes)
+      reachable_in_graph_of_current_player?(piece_indexes, target_indexes) || diagonal_move_possible?(current_opponent, piece_to_move, piece_indexes, target_indexes)
     else
       false
     end
   end
 
-  def diagonal_move_possible?(piece_to_move, piece_indexes, target_indexes)
+  def diagonal_move_possible?(player, piece_to_move, piece_indexes, target_indexes)
     diagonal_indexes = calculate_diagonal_indexes(piece_to_move.start_position[1], piece_indexes)
-
     if diagonal_indexes.include?(target_indexes)
-      current_opponent.set.include?(board[target_indexes[0]] [target_indexes[1]])
+      player.set.include?(board[target_indexes[0]] [target_indexes[1]])
     end
   end
 

@@ -48,7 +48,7 @@ class Game
         piece_indexes = piece.coordinates
         if reachable_in_graph_of_current_player?(piece_indexes, coordinates_of_opponent_king) && path_free?(piece, piece.coordinates, coordinates_of_opponent_king)
           return reachable_from_current_player_set = true
-        elsif diagonal_move_possible?(piece, piece_indexes, coordinates_of_opponent_king)
+        elsif diagonal_move_possible?(current_opponent, piece, piece_indexes, coordinates_of_opponent_king)
           return reachable_from_current_player_set = true
         end
       end
