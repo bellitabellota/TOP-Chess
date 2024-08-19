@@ -19,6 +19,8 @@ module PlayerMove
         pawn_promotion(pawn)
       elsif pawn.start_position[1] == 6 && player_move[1][1] == 0
         pawn_promotion(pawn)
+      else
+        return
       end
       display_board
     end
@@ -74,7 +76,7 @@ module PlayerMove
   end
 
   def undo_update_coordinates_of_moved_piece(player_move)
-    board[player_move[0][0]][player_move[0][1]] = [player_move[0][0], player_move[0][1]]
+    board[player_move[0][0]][player_move[0][1]].coordinates = [player_move[0][0], player_move[0][1]]
   end
 
   def undo_update_board(player_move, captured_opponent_piece)
