@@ -108,6 +108,8 @@ module PlayerMove
         piece_indexes = piece.coordinates
         if reachable_in_graph_of_opponent_player?(coordinates_king, piece_indexes) && path_free?(piece, piece.coordinates, coordinates_king)
           return reachable_from_current_opponent_set = true
+        elsif diagonal_move_possible?(piece, piece_indexes, coordinates_king)
+          return reachable_from_current_player_set = true
         end
       end
     end
