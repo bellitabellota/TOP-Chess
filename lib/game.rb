@@ -24,8 +24,36 @@ class Game
     loop do
       make_player_move
       display_board
+
+      puts "CHECK! #{current_opponent.name} carefully consider your next move." if check?
+
       switch_current_player
     end
+  end
+
+  def check?
+    coordinates_of_opponent_king = current_opponent.set[0].coordinates
+
+    reachable_from_current_player_set = false
+
+    current_player.set.each do |piece|
+      piece_class = piece.class
+
+      if [Knight, Bishop, King, Queen, Rook].include?(piece_class)
+        current_vertex = piece_class.graph.find_vertex(piece.coordinates)
+        if current_vertex.reachable_coordinates.include?(coordinates_of_opponent_king) && path_free?(piece, piece.coordinates, coordinates_of_opponent_king)
+          return reachable_from_current_player_set = true
+        end
+      elsif piece_class == Pawn
+        piece_indexes = piece.coordinates
+        if reachable_in_graph_of_current_player?(piece_indexes, coordinates_of_opponent_king) && path_free?(piece, piece.coordinates, coordinates_of_opponent_king)
+          return reachable_from_current_player_set = true
+        elsif diagonal_move_possible?(piece, piece_indexes, coordinates_of_opponent_king)
+          return reachable_from_current_player_set = true
+        end
+      end
+    end
+    reachable_from_current_player_set
   end
 
   def switch_current_player
