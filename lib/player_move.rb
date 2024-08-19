@@ -3,6 +3,7 @@ module PlayerMove
     player_move = request_player_move
     captured_opponent_piece = update_opponent_set_when_capture(player_move)
     update_board(player_move)
+    update_tboard(player_move)
     update_coordinates_of_moved_piece(player_move)
 
     if leaves_own_king_in_check?
@@ -10,8 +11,6 @@ module PlayerMove
       undo_last_move(captured_opponent_piece, player_move)
       make_player_move
     end
-
-    update_tboard(player_move)
 
     if board[player_move[1][0]][player_move[1][1]].is_a?(Pawn)
       pawn = board[player_move[1][0]][player_move[1][1]]
@@ -73,6 +72,7 @@ module PlayerMove
     add_captured_opponent_piece_back_to_set(captured_opponent_piece)
     undo_update_board(player_move, captured_opponent_piece)
     undo_update_coordinates_of_moved_piece(player_move)
+    undo_update_tboard(player_move, captured_opponent_piece)
   end
 
   def undo_update_coordinates_of_moved_piece(player_move)
@@ -82,6 +82,15 @@ module PlayerMove
   def undo_update_board(player_move, captured_opponent_piece)
     board[player_move[0][0]][player_move[0][1]] = board[player_move[1][0]][player_move[1][1]]
     board[player_move[1][0]][player_move[1][1]] = captured_opponent_piece
+  end
+
+  def undo_update_tboard(player_move, captured_opponent_piece)
+    tboard[player_move[0][0]][player_move[0][1]] = tboard[player_move[1][0]][player_move[1][1]]
+    if captured_opponent_piece.nil?
+      tboard[player_move[1][0]][player_move[1][1]] = " "
+    else
+      tboard[player_move[1][0]][player_move[1][1]] = captured_opponent_piece.token
+    end
   end
 
   def add_captured_opponent_piece_back_to_set(captured_opponent_piece)
