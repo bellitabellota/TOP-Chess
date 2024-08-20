@@ -9,7 +9,7 @@ module PlayerMove
     player_move = request_player_move
     captured_opponent_piece = update_opponent_set_when_capture(player_move)
     update_board(player_move)
-    update_tboard(player_move)
+    update_tokens_on_tboard
     update_coordinates_of_moved_piece(player_move)
 
     reject_move(captured_opponent_piece, player_move) if leaves_own_king_in_check?
@@ -20,11 +20,6 @@ module PlayerMove
   def update_board(player_move)
     board[player_move[1][0]][player_move[1][1]] = board[player_move[0][0]][player_move[0][1]]
     board[player_move[0][0]][player_move[0][1]] = nil
-  end
-
-  def update_tboard(player_move)
-    tboard[player_move[1][0]][player_move[1][1]] = tboard[player_move[0][0]][player_move[0][1]]
-    tboard[player_move[0][0]][player_move[0][1]] = " "
   end
 
   def update_opponent_set_when_capture(player_move)

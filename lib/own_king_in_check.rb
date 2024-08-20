@@ -8,8 +8,8 @@ module OwnKinginCheck
   def undo_last_move(captured_opponent_piece, player_move)
     add_captured_opponent_piece_back_to_set(captured_opponent_piece)
     undo_update_board(player_move, captured_opponent_piece)
+    update_tokens_on_tboard
     undo_update_coordinates_of_moved_piece(player_move)
-    undo_update_tboard(player_move, captured_opponent_piece)
   end
 
   def undo_update_coordinates_of_moved_piece(player_move)
@@ -19,15 +19,6 @@ module OwnKinginCheck
   def undo_update_board(player_move, captured_opponent_piece)
     board[player_move[0][0]][player_move[0][1]] = board[player_move[1][0]][player_move[1][1]]
     board[player_move[1][0]][player_move[1][1]] = captured_opponent_piece
-  end
-
-  def undo_update_tboard(player_move, captured_opponent_piece)
-    tboard[player_move[0][0]][player_move[0][1]] = tboard[player_move[1][0]][player_move[1][1]]
-    if captured_opponent_piece.nil?
-      tboard[player_move[1][0]][player_move[1][1]] = " "
-    else
-      tboard[player_move[1][0]][player_move[1][1]] = captured_opponent_piece.token
-    end
   end
 
   def add_captured_opponent_piece_back_to_set(captured_opponent_piece)

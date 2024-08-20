@@ -33,7 +33,7 @@ module PawnPromotion
     current_player.set.insert(2, chosen_piece)
 
     board[chosen_piece.coordinates[0]][chosen_piece.coordinates[1]] = chosen_piece
-    tboard[chosen_piece.coordinates[0]][chosen_piece.coordinates[1]] = chosen_piece.token
+    update_tokens_on_tboard
   end
 
   def check_token_index
