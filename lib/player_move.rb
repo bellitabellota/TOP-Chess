@@ -173,6 +173,12 @@ module PlayerMove
         puts "This field is not reachable with the movement pattern of the chosen piece."
       end
 
+      if piece_to_move.is_a?(Pawn)
+        puts "This field is not reachable with a Pawn or already occupied by another piece."
+      else
+        puts "This field is not reachable with the movement pattern of the chosen piece."
+      end
+
       return false
     end
 
@@ -180,6 +186,7 @@ module PlayerMove
       puts "The location where you want to move your piece already contains a piece of yours. Thus this move is not valid."
       return false
     end
+
 
     unless path_free?(piece_to_move, piece_indexes, target_indexes)
       puts "The path to the location of your choice is not free."
@@ -259,11 +266,7 @@ module PlayerMove
       current_vertex = piece_class.graph.find_vertex(piece_indexes)
       current_vertex.reachable_coordinates.include?(target_indexes)
     elsif piece_class == Pawn
-      if reachable_in_graph_of_current_player?(piece_indexes, target_indexes) && pawn_target_field_free?(target_indexes) && path_free?(piece_to_move, piece_indexes, target_indexes)
-        return true
-      end
-
-      true if diagonal_move_possible?(current_opponent, piece_to_move, piece_indexes, target_indexes)
+      reachable_in_graph_of_current_player?(piece_indexes, target_indexes) || diagonal_move_possible?(current_opponent, piece_to_move, piece_indexes, target_indexes)
     else
       false
     end
