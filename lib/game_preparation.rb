@@ -4,20 +4,10 @@ module GamePreparation
     create_set
 
     place_sets_on_board
-    place_set_tokens_on_tboard
+    update_tokens_on_tboard
 
     if current_player.set_color == "black"
       switch_current_player
-    end
-  end
-
-  def place_set_tokens_on_tboard
-    board.each_with_index do |array, index|
-      array.each_with_index do |value, inner_index|
-        if !value.nil?
-          tboard[index][inner_index] = value.token
-        end
-      end
     end
   end
 

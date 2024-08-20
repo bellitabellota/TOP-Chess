@@ -83,6 +83,27 @@ class Game
 
   private
 
+  def update_tokens_on_tboard
+    reset_tboard unless tboard_empty?
+
+    board.each_with_index do |array, index|
+      array.each_with_index do |value, inner_index|
+        tboard[index][inner_index] = value.token unless value.nil?
+      end
+    end
+  end
+
+  def tboard_empty?
+    tboard.each do |inner_array|
+      return false unless inner_array.all? { |value| value == " " }
+    end
+    true
+  end
+
+  def reset_tboard
+    self.tboard = Array.new(8) { Array.new(8, " ") }
+  end
+
   def display_board
     puts
     puts "    a   b   c   d   e   f   g   h  "
