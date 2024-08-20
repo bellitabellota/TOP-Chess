@@ -25,33 +25,52 @@ class Game
       make_player_move
       display_board
 
+      return puts "CHECKMATE!!! The game is over. #{current_opponent.name} lost." if checkmate?
+
       puts "CHECK! #{current_opponent.name} carefully consider your next move." if check?
 
       switch_current_player
     end
   end
 
+  def checkmate?
+    check? && all_possible_moves_lead_to_check?
+  end
+
+  def all_possible_moves_lead_to_check?
+    current_vertex = King.graph.find_vertex(current_opponent.set[0].coordinates)
+    coordinates_next_moves_opponent_king = current_vertex.reachable_coordinates
+
+    coordinates_next_moves_opponent_king.each do |next_coordinate_opponent_king|
+      return false if capturable_by_current_players_pieces?(next_coordinate_opponent_king)
+    end
+
+    true
+  end
+
   def check?
     coordinates_of_opponent_king = current_opponent.set[0].coordinates
 
-    reachable_from_current_player_set = false
+    capturable_by_current_players_pieces?(coordinates_of_opponent_king)
+  end
 
+  def capturable_by_current_players_pieces?(coordinates_of_opponent_king)
     current_player.set.each do |piece|
       piece_class = piece.class
 
       if [Knight, Bishop, King, Queen, Rook].include?(piece_class)
         current_vertex = piece_class.graph.find_vertex(piece.coordinates)
         if current_vertex.reachable_coordinates.include?(coordinates_of_opponent_king) && path_free?(piece, piece.coordinates, coordinates_of_opponent_king)
-          return reachable_from_current_player_set = true
+          return true
         end
       elsif piece_class == Pawn
         piece_indexes = piece.coordinates
         if diagonal_move_possible?(current_opponent, piece, piece_indexes, coordinates_of_opponent_king)
-          return reachable_from_current_player_set = true
+          return true
         end
       end
     end
-    reachable_from_current_player_set
+    false
   end
 
   def switch_current_player
