@@ -12,15 +12,25 @@ module PlayerMove
       make_player_move
     end
 
-    if board[player_move[1][0]][player_move[1][1]].is_a?(Pawn)
-      pawn = board[player_move[1][0]][player_move[1][1]]
-      if (pawn.start_position[1] == 1 && player_move[1][1] == 7) || (pawn.start_position[1] == 6 && (player_move[1][1]).zero?)
-        pawn_promotion(pawn)
-      else
-        return
-      end
-      display_board
-    end
+    check_and_apply_pawn_promotion(player_move)
+  end
+
+  def check_and_apply_pawn_promotion(player_move)
+    moved_piece = board[player_move[1][0]][player_move[1][1]]
+
+    return unless moved_piece.is_a?(Pawn)
+
+    return unless advanced_to_eighth_rank?(moved_piece, player_move)
+
+    pawn_promotion(moved_piece)
+    display_board
+  end
+
+  def advanced_to_eighth_rank?(moved_piece, player_move)
+    return true if moved_piece.start_position[1] == 1 && player_move[1][1] == 7
+    return true if moved_piece.start_position[1] == 6 && (player_move[1][1]).zero?
+
+    false
   end
 
   def pawn_promotion(pawn)
@@ -247,6 +257,8 @@ module PlayerMove
   end
 
   def target_field_not_containing_own_piece?(target_indexes)
+    p target_indexes
+    p board[target_indexes[0]] [target_indexes[1]]
     return false if current_player.set.include?(board[target_indexes[0]] [target_indexes[1]])
 
     true
