@@ -17,12 +17,6 @@ module PlayerMove
     check_and_apply_pawn_promotion(player_move)
   end
 
-  def reachable_in_graph_of_opponent_player?(coordinates_king, piece_indexes) ###not called nowhere?
-    current_opponent.set_color == "white" ? current_vertex = Pawn.graph_player_white.find_vertex(piece_indexes) : current_vertex = Pawn.graph_player_black.find_vertex(piece_indexes)
-
-    current_vertex.reachable_coordinates.include?(coordinates_king)
-  end
-
   def update_board(player_move)
     board[player_move[1][0]][player_move[1][1]] = board[player_move[0][0]][player_move[0][1]]
     board[player_move[0][0]][player_move[0][1]] = nil
