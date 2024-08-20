@@ -14,9 +14,7 @@ module PlayerMove
 
     if board[player_move[1][0]][player_move[1][1]].is_a?(Pawn)
       pawn = board[player_move[1][0]][player_move[1][1]]
-      if pawn.start_position[1] == 1 && player_move[1][1] == 7
-        pawn_promotion(pawn)
-      elsif pawn.start_position[1] == 6 && player_move[1][1] == 0
+      if (pawn.start_position[1] == 1 && player_move[1][1] == 7) || (pawn.start_position[1] == 6 && (player_move[1][1]).zero?)
         pawn_promotion(pawn)
       else
         return
