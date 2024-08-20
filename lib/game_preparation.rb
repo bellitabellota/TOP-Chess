@@ -3,7 +3,7 @@ module GamePreparation
     create_players
     create_set
 
-    place_set_on_board
+    place_sets_on_board
     place_set_tokens_on_tboard
 
     if current_player.set_color == "black"
@@ -21,7 +21,7 @@ module GamePreparation
     end
   end
 
-  def place_set_on_board
+  def place_sets_on_board
     player1.set.each { |piece| board[piece.coordinates[0]][piece.coordinates[1]] = piece }
     player2.set.each { |piece| board[piece.coordinates[0]][piece.coordinates[1]] = piece }
   end
