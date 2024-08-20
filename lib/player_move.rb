@@ -158,16 +158,30 @@ module PlayerMove
 
       return [piece_indexes, target_indexes] if move_possible?(piece_to_move, piece_indexes, target_indexes)
 
-      puts "This is not a valid move. Let's try again."
+      puts "Let's try again."
       puts
     end
   end
 
   def move_possible?(piece_to_move, piece_indexes, target_indexes)
-    return false if piece_indexes == target_indexes
-    return false unless verify_target_field_reachable?(piece_to_move, piece_indexes, target_indexes)
-    return false unless target_field_not_containing_own_piece?(target_indexes)
-    return false unless path_free?(piece_to_move, piece_indexes, target_indexes)
+    if piece_indexes == target_indexes
+      puts "You have to move your piece. The location where you move your piece cannot match you start position."
+      return false
+    end
+
+    unless verify_target_field_reachable?(piece_to_move, piece_indexes, target_indexes)
+      puts "This field is not reachable with the movement pattern of the chosen piece."
+      return false
+    end
+
+    unless target_field_not_containing_own_piece?(target_indexes)
+      puts "The location where you want to move your piece already contains a piece of yours. Thus this move is not valid."
+      return false
+    end
+    unless path_free?(piece_to_move, piece_indexes, target_indexes)
+      puts "The path to the location of your choice is not free."
+      return false
+    end
 
     true
   end
