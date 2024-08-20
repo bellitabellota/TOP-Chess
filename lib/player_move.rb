@@ -1,7 +1,9 @@
 require_relative "pawn_promotion"
+require_relative "own_king_in_check"
 
 module PlayerMove
   include PawnPromotion
+  include OwnKinginCheck
 
   def make_player_move
     player_move = request_player_move
@@ -10,72 +12,12 @@ module PlayerMove
     update_tboard(player_move)
     update_coordinates_of_moved_piece(player_move)
 
-    if leaves_own_king_in_check?
-      puts "Invalid move. This is move leaves your king in check. Enter another move:"
-      undo_last_move(captured_opponent_piece, player_move)
-      make_player_move
-    end
+    reject_move(captured_opponent_piece, player_move) if leaves_own_king_in_check?
 
     check_and_apply_pawn_promotion(player_move)
   end
 
-  def undo_last_move(captured_opponent_piece, player_move)
-    add_captured_opponent_piece_back_to_set(captured_opponent_piece)
-    undo_update_board(player_move, captured_opponent_piece)
-    undo_update_coordinates_of_moved_piece(player_move)
-    undo_update_tboard(player_move, captured_opponent_piece)
-  end
-
-  def undo_update_coordinates_of_moved_piece(player_move)
-    board[player_move[0][0]][player_move[0][1]].coordinates = [player_move[0][0], player_move[0][1]]
-  end
-
-  def undo_update_board(player_move, captured_opponent_piece)
-    board[player_move[0][0]][player_move[0][1]] = board[player_move[1][0]][player_move[1][1]]
-    board[player_move[1][0]][player_move[1][1]] = captured_opponent_piece
-  end
-
-  def undo_update_tboard(player_move, captured_opponent_piece)
-    tboard[player_move[0][0]][player_move[0][1]] = tboard[player_move[1][0]][player_move[1][1]]
-    if captured_opponent_piece.nil?
-      tboard[player_move[1][0]][player_move[1][1]] = " "
-    else
-      tboard[player_move[1][0]][player_move[1][1]] = captured_opponent_piece.token
-    end
-  end
-
-  def add_captured_opponent_piece_back_to_set(captured_opponent_piece)
-    current_opponent.set.insert(1, captured_opponent_piece)
-  end
-
-  def update_coordinates_of_moved_piece(player_move)
-    board[player_move[1][0]][player_move[1][1]].coordinates = [player_move[1][0], player_move[1][1]]
-  end
-
-  def leaves_own_king_in_check?
-    coordinates_king = current_player.set[0].coordinates
-    reachable_from_current_opponent_set = false
-
-    current_opponent.set.each do |piece|
-      piece_class = piece.class
-
-      if [Knight, Bishop, King, Queen, Rook].include?(piece_class)
-        current_vertex = piece_class.graph.find_vertex(piece.coordinates)
-        if current_vertex.reachable_coordinates.include?(coordinates_king) && path_free?(piece, piece.coordinates, coordinates_king)
-          return reachable_from_current_opponent_set = true
-        end
-      elsif piece_class == Pawn
-        piece_indexes = piece.coordinates
-
-        if diagonal_move_possible?(current_player, piece, piece_indexes, coordinates_king)
-          return reachable_from_current_opponent_set = true
-        end
-      end
-    end
-    reachable_from_current_opponent_set
-  end
-
-  def reachable_in_graph_of_opponent_player?(coordinates_king, piece_indexes)
+  def reachable_in_graph_of_opponent_player?(coordinates_king, piece_indexes) ###not called nowhere?
     current_opponent.set_color == "white" ? current_vertex = Pawn.graph_player_white.find_vertex(piece_indexes) : current_vertex = Pawn.graph_player_black.find_vertex(piece_indexes)
 
     current_vertex.reachable_coordinates.include?(coordinates_king)
