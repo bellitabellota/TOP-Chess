@@ -115,9 +115,8 @@ module PlayerMove
         end
       elsif piece_class == Pawn
         piece_indexes = piece.coordinates
-        if reachable_in_graph_of_opponent_player?(coordinates_king, piece_indexes) && path_free?(piece, piece.coordinates, coordinates_king)
-          return reachable_from_current_opponent_set = true
-        elsif diagonal_move_possible?(current_player, piece, piece_indexes, coordinates_king)
+
+        if diagonal_move_possible?(current_player, piece, piece_indexes, coordinates_king)
           return reachable_from_current_opponent_set = true
         end
       end
