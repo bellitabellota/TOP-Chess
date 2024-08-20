@@ -259,7 +259,11 @@ module PlayerMove
       current_vertex = piece_class.graph.find_vertex(piece_indexes)
       current_vertex.reachable_coordinates.include?(target_indexes)
     elsif piece_class == Pawn
-      reachable_in_graph_of_current_player?(piece_indexes, target_indexes) || diagonal_move_possible?(current_opponent, piece_to_move, piece_indexes, target_indexes)
+      if reachable_in_graph_of_current_player?(piece_indexes, target_indexes) && pawn_target_field_free?(target_indexes) && path_free?(piece_to_move, piece_indexes, target_indexes)
+        return true
+      end
+
+      true if diagonal_move_possible?(current_opponent, piece_to_move, piece_indexes, target_indexes)
     else
       false
     end
