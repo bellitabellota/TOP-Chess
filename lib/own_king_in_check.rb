@@ -25,10 +25,6 @@ module OwnKinginCheck
     current_opponent.set.insert(1, captured_opponent_piece)
   end
 
-  def update_coordinates_of_moved_piece(player_move)
-    board[player_move[1][0]][player_move[1][1]].coordinates = [player_move[1][0], player_move[1][1]]
-  end
-
   def leaves_own_king_in_check?
     coordinates_king = current_player.set[0].coordinates
     reachable_from_current_opponent_set = false

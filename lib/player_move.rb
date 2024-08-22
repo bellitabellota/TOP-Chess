@@ -17,6 +17,10 @@ module PlayerMove
     check_and_apply_pawn_promotion(player_move)
   end
 
+  def update_coordinates_of_moved_piece(player_move)
+    board[player_move[1][0]][player_move[1][1]].coordinates = [player_move[1][0], player_move[1][1]]
+  end
+
   def update_board(player_move)
     board[player_move[1][0]][player_move[1][1]] = board[player_move[0][0]][player_move[0][1]]
     board[player_move[0][0]][player_move[0][1]] = nil
