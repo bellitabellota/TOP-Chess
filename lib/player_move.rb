@@ -16,6 +16,8 @@ module PlayerMove
     reject_move(captured_opponent_piece, player_move, index_captured_opponent_piece) if leaves_own_king_in_check?
 
     check_and_apply_pawn_promotion(player_move)
+
+    self.piece_moved_during_current_turn = board[player_move[1][0]][player_move[1][1]]
   end
 
   def update_coordinates_of_moved_piece(player_move)

@@ -4,7 +4,7 @@ require_relative "player_move"
 
 class Game
   attr_reader :player1, :player2
-  attr_accessor :player1_set, :player2_set, :board, :tboard, :current_player
+  attr_accessor :player1_set, :player2_set, :board, :tboard, :current_player, :piece_moved_during_current_turn
 
   def initialize
     @player1 = Player.new
@@ -12,6 +12,7 @@ class Game
     @board = Array.new(8) { Array.new(8, nil) }
     @tboard = Array.new(8) { Array.new(8, " ") }
     @current_player = player1
+    @piece_moved_during_current_turn = nil
   end
 
   include GamePreparation
@@ -34,13 +35,36 @@ class Game
   end
 
   def checkmate?
-    check? && all_possible_moves_lead_to_check?
+    check? && all_possible_moves_lead_to_check? && !threatening_piece_capturable?
+  end
+
+  def threatening_piece_capturable?
+    capturable_by_opponent_players_pieces?(piece_moved_during_current_turn.coordinates)
+  end
+
+  def capturable_by_opponent_players_pieces?(coordinates_last_moved_piece)
+    current_opponent.set.each do |piece|
+      piece_class = piece.class
+
+      if [Knight, Bishop, King, Queen, Rook].include?(piece_class)
+        current_vertex = piece_class.graph.find_vertex(piece.coordinates)
+        if current_vertex.reachable_coordinates.include?(coordinates_last_moved_piece) && path_free?(piece, piece.coordinates, coordinates_last_moved_piece)
+          return true
+        end
+      elsif piece_class == Pawn
+        piece_indexes = piece.coordinates
+        if diagonal_move_possible?(current_player, piece, piece_indexes, coordinates_last_moved_piece)
+          return true
+        end
+      end
+    end
+    false
   end
 
   def all_possible_moves_lead_to_check?
     current_vertex = King.graph.find_vertex(current_opponent.set[0].coordinates)
     coordinates_next_moves_opponent_king = current_vertex.reachable_coordinates
-    possible_coordinates_next_moves_opponent_king = coordinates_next_moves_opponent_king.select do |target_indexes| 
+    possible_coordinates_next_moves_opponent_king = coordinates_next_moves_opponent_king.select do |target_indexes|
       target_field_not_containing_opponent_piece?(target_indexes)
     end
 
