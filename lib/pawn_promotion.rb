@@ -6,8 +6,8 @@ module PawnPromotion
 
     return unless advanced_to_eighth_rank?(moved_piece, player_move)
 
-    pawn_promotion(moved_piece)
     display_board
+    pawn_promotion(moved_piece)
   end
 
   def advanced_to_eighth_rank?(moved_piece, player_move)
