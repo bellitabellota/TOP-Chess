@@ -8,4 +8,4 @@
 Preview of the Game being played in the CLI:
 
 
-<img src="" />
+<img src="https://github.com/bellitabellota/TOP-Chess/blob/main/chess.gif" />
