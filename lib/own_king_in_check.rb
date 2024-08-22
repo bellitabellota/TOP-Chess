@@ -1,12 +1,12 @@
 module OwnKinginCheck
-  def reject_move(captured_opponent_piece, player_move)
+  def reject_move(captured_opponent_piece, player_move, index_captured_opponent_piece)
     puts "Invalid move. This is move leaves your king in check. Enter another move:"
-    undo_last_move(captured_opponent_piece, player_move)
+    undo_last_move(captured_opponent_piece, player_move, index_captured_opponent_piece)
     make_player_move
   end
 
-  def undo_last_move(captured_opponent_piece, player_move)
-    add_captured_opponent_piece_back_to_set(captured_opponent_piece)
+  def undo_last_move(captured_opponent_piece, player_move, index_captured_opponent_piece)
+    add_captured_opponent_piece_back_to_set(captured_opponent_piece, index_captured_opponent_piece)
     undo_update_board(player_move, captured_opponent_piece)
     update_tokens_on_tboard
     undo_update_coordinates_of_moved_piece(player_move)
@@ -21,8 +21,8 @@ module OwnKinginCheck
     board[player_move[1][0]][player_move[1][1]] = captured_opponent_piece
   end
 
-  def add_captured_opponent_piece_back_to_set(captured_opponent_piece)
-    current_opponent.set.insert(1, captured_opponent_piece)
+  def add_captured_opponent_piece_back_to_set(captured_opponent_piece, index_captured_opponent_piece)
+    current_opponent.set.insert(index_captured_opponent_piece, captured_opponent_piece)
   end
 
   def leaves_own_king_in_check?

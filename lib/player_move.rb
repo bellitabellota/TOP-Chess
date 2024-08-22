@@ -7,12 +7,13 @@ module PlayerMove
 
   def make_player_move
     player_move = request_player_move
+    index_captured_opponent_piece = search_opponent_set_for_piece(player_move)
     captured_opponent_piece = update_opponent_set_when_capture(player_move)
     update_board(player_move)
     update_tokens_on_tboard
     update_coordinates_of_moved_piece(player_move)
 
-    reject_move(captured_opponent_piece, player_move) if leaves_own_king_in_check?
+    reject_move(captured_opponent_piece, player_move, index_captured_opponent_piece) if leaves_own_king_in_check?
 
     check_and_apply_pawn_promotion(player_move)
   end
@@ -24,6 +25,12 @@ module PlayerMove
   def update_board(player_move)
     board[player_move[1][0]][player_move[1][1]] = board[player_move[0][0]][player_move[0][1]]
     board[player_move[0][0]][player_move[0][1]] = nil
+  end
+
+  def search_opponent_set_for_piece(player_move)
+    piece_index = nil
+    current_opponent.set.each_with_index { |piece, index| return piece_index = index if piece == board[player_move[1][0]][player_move[1][1]]}
+    piece_index
   end
 
   def update_opponent_set_when_capture(player_move)
