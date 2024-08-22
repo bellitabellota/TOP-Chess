@@ -40,10 +40,19 @@ class Game
   def all_possible_moves_lead_to_check?
     current_vertex = King.graph.find_vertex(current_opponent.set[0].coordinates)
     coordinates_next_moves_opponent_king = current_vertex.reachable_coordinates
-
-    coordinates_next_moves_opponent_king.each do |next_coordinate_opponent_king|
-      return false if capturable_by_current_players_pieces?(next_coordinate_opponent_king)
+    possible_coordinates_next_moves_opponent_king = coordinates_next_moves_opponent_king.select do |target_indexes| 
+      target_field_not_containing_opponent_piece?(target_indexes)
     end
+
+    possible_coordinates_next_moves_opponent_king.each do |next_coordinate_opponent_king|
+      return false unless capturable_by_current_players_pieces?(next_coordinate_opponent_king)
+    end
+
+    true
+  end
+
+  def target_field_not_containing_opponent_piece?(target_indexes)
+    return false if current_opponent.set.include?(board[target_indexes[0]] [target_indexes[1]])
 
     true
   end
