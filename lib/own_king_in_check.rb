@@ -6,7 +6,10 @@ module OwnKinginCheck
   end
 
   def undo_last_move(captured_opponent_piece, player_move, index_captured_opponent_piece)
-    add_captured_opponent_piece_back_to_set(captured_opponent_piece, index_captured_opponent_piece)
+    unless captured_opponent_piece.nil?
+      add_captured_opponent_piece_back_to_set(captured_opponent_piece, index_captured_opponent_piece)
+    end
+
     undo_update_board(player_move, captured_opponent_piece)
     update_tokens_on_tboard
     undo_update_coordinates_of_moved_piece(player_move)
