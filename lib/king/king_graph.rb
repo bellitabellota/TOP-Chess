@@ -2,7 +2,7 @@ require_relative "king_vertex"
 
 class KingGraph
   attr_reader :vertices
-  
+
   def initialize
     @vertices = create_vertices
   end

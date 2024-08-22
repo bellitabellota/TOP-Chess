@@ -142,8 +142,6 @@ module PlayerMove
   end
 
   def target_field_not_containing_own_piece?(target_indexes)
-    p target_indexes
-    p board[target_indexes[0]] [target_indexes[1]]
     return false if current_player.set.include?(board[target_indexes[0]] [target_indexes[1]])
 
     true
