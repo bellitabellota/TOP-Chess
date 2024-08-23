@@ -1,9 +1,9 @@
 require_relative "pawn_promotion"
-require_relative "own_king_in_check"
+require_relative "king_in_check"
 
 module PlayerMove
   include PawnPromotion
-  include OwnKinginCheck
+  include KinginCheck
 
   def make_player_move
     player_move = request_player_move

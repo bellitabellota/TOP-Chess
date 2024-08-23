@@ -1,4 +1,4 @@
-module OwnKinginCheck
+module KinginCheck
   def reject_move(captured_opponent_piece, player_move, index_captured_opponent_piece)
     puts "Invalid move. This is move leaves your king in check. Enter another move:"
     undo_last_move(captured_opponent_piece, player_move, index_captured_opponent_piece)
