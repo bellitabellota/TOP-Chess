@@ -28,26 +28,26 @@ module OwnKinginCheck
     current_opponent.set.insert(index_captured_opponent_piece, captured_opponent_piece)
   end
 
-  def leaves_own_king_in_check?
-    coordinates_king = current_player.set[0].coordinates
-    reachable_from_current_opponent_set = false
+  def leaves_king_in_check?(player, opponent)
+    coordinates_king = player.set[0].coordinates
+    reachable_from_opponent_set = false
 
-    current_opponent.set.each do |piece|
+    opponent.set.each do |piece|
       piece_class = piece.class
 
       if [Knight, Bishop, King, Queen, Rook].include?(piece_class)
         current_vertex = piece_class.graph.find_vertex(piece.coordinates)
         if current_vertex.reachable_coordinates.include?(coordinates_king) && path_free?(piece, piece.coordinates, coordinates_king)
-          return reachable_from_current_opponent_set = true
+          return reachable_from_opponent_set = true
         end
       elsif piece_class == Pawn
         piece_indexes = piece.coordinates
 
-        if diagonal_move_possible?(current_player, piece, piece_indexes, coordinates_king)
-          return reachable_from_current_opponent_set = true
+        if diagonal_move_possible?(player, piece, piece_indexes, coordinates_king)
+          return reachable_from_opponent_set = true
         end
       end
     end
-    reachable_from_current_opponent_set
+    reachable_from_opponent_set
   end
 end

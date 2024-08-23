@@ -13,7 +13,7 @@ module PlayerMove
     update_tokens_on_tboard
     update_coordinates_of_moved_piece(player_move)
 
-    reject_move(captured_opponent_piece, player_move, index_captured_opponent_piece) if leaves_own_king_in_check?
+    reject_move(captured_opponent_piece, player_move, index_captured_opponent_piece) if leaves_king_in_check?(current_player, current_opponent)
 
     check_and_apply_pawn_promotion(player_move)
 
@@ -73,7 +73,7 @@ module PlayerMove
       return false
     end
 
-    unless target_field_not_containing_own_piece?(target_indexes)
+    unless target_field_not_containing_own_piece?(target_indexes, current_player)
       puts "The location where you want to move your piece already contains a piece of yours. Thus this move is not valid."
       return false
     end
@@ -143,8 +143,8 @@ module PlayerMove
     array
   end
 
-  def target_field_not_containing_own_piece?(target_indexes)
-    return false if current_player.set.include?(board[target_indexes[0]] [target_indexes[1]])
+  def target_field_not_containing_own_piece?(target_indexes, player)
+    return false if player.set.include?(board[target_indexes[0]] [target_indexes[1]])
 
     true
   end
